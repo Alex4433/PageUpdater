@@ -7,6 +7,47 @@ from settings import proxies, headers
 from dataclass import Post
 
 
+class RequestManager:
+    def __init__(self):
+        pass
+
+    def req(self, url):
+        pass
+
+
+class DefaultRequestManager(RequestManager):
+    def __init__(self):
+        self.proxies = proxies
+        self.headers = headers
+
+    def req(self, url):
+        return requests.get(url=url, proxies=self.proxies, headers=self.headers)
+
+
+class MockRequestManager(RequestManager):
+    def __init__(self, mock: list):
+        self.mock = mock
+
+    def req(self):
+        if self.mock:
+            path = self.mock.pop(0)
+            with open(path, "r", encoding="utf-8") as file:
+                return file.read()
+        else:
+            raise StopIteration("no more mock objects")
+
+
+class DisplayController:
+    def display_controller(self):
+        pass
+
+    def display_on_cmd(self):
+        pass
+
+    def formant_string_according_settings(self):
+        pass
+
+
 class Parser:
 
     """
@@ -18,7 +59,7 @@ class Parser:
 
     """
 
-    def __init__(self, name: str, url: str, find_word: list):
+    def __init__(self, name: str, url: str, find_word: list, mock=None):
         self.name = name
         self.url = url
         self.find_word = find_word
@@ -29,6 +70,8 @@ class Parser:
         self.new_posts = []
         self.status = True
 
+        self.request_manager = factory_RequestManager(mock)
+
     def save(self):
         self.db.save()
 
@@ -36,7 +79,8 @@ class Parser:
 
         if self.status:
             try:
-                self.req = requests.get(url=self.url, proxies=proxies, headers=headers)
+                self.req = self.request_manager.req(self.url)
+                # self.req = requests.get(url=self.url, proxies=proxies, headers=headers)
             except Exception as ex:
                 print(ex)
                 print(f"[log] connection failed site: {self.name}")
@@ -158,3 +202,10 @@ def factory_parser(name, url, find_word):
 
     elif 'vk.com' in url:
         return ParserVk(name, url, find_word)
+
+
+def factory_RequestManager(mock):
+    if mock:
+        return MockRequestManager(mock)
+    else:
+        return DefaultRequestManager()
