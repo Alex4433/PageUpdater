@@ -37,6 +37,10 @@ class MockRequestManager(RequestManager):
             raise StopIteration("no more mock objects")
 
 
+class SeleniumRequestManager(RequestManager):
+    pass
+
+
 class DisplayController:
     def display_controller(self):
         pass
