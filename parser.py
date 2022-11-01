@@ -1,10 +1,13 @@
 import requests
+import os
 
 from bs4 import BeautifulSoup
 
-from db import DB
+from db import factory_db, DB
 from settings import proxies, headers
 from dataclass import Post
+
+ENTRY_PATH = os.getcwd()
 
 
 class RequestManager:
@@ -28,11 +31,17 @@ class MockRequestManager(RequestManager):
     def __init__(self, mock: list):
         self.mock = mock
 
-    def req(self):
+    def req(self, *args, **kwargs):
+
         if self.mock:
-            path = self.mock.pop(0)
-            with open(path, "r", encoding="utf-8") as file:
-                return file.read()
+            path = ENTRY_PATH + self.mock.pop(0)
+            try:
+                with open(path, "r") as file:
+                    return file.read()
+            except Exception as ex:
+                print(f"failed {ex}")
+                raise FileNotFoundError("File for mock is not found")
+
         else:
             raise StopIteration("no more mock objects")
 
@@ -63,18 +72,18 @@ class Parser:
 
     """
 
-    def __init__(self, name: str, url: str, find_word: list, mock=None):
+    def __init__(self, name: str, url: str, find_word: list, mock):
         self.name = name
         self.url = url
         self.find_word = find_word
 
-        self.db: DB = DB(url)
+        self.db: DB = factory_db(url)
         self.data: list = self.db.data
 
         self.new_posts = []
         self.status = True
 
-        self.request_manager = factory_RequestManager(mock)
+        self.request_manager = factory_RequestManager(mock=mock)
 
     def save(self):
         self.db.save()
@@ -197,15 +206,15 @@ class ParserRSS(Parser):
             self._add_post_to_inner_list(title, date, content, url)
 
 
-def factory_parser(name, url, find_word):
+def factory_parser(name, url, find_word, mock=None):
     if 'youtube.com' in url:
-        return ParserYt(name, url, find_word)
+        return ParserYt(name, url, find_word, mock)
 
     elif 'rss' or 'RSS' in url:
-        return ParserRSS(name, url, find_word)
+        return ParserRSS(name, url, find_word, mock)
 
     elif 'vk.com' in url:
-        return ParserVk(name, url, find_word)
+        return ParserVk(name, url, find_word, mock)
 
 
 def factory_RequestManager(mock):

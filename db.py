@@ -9,11 +9,19 @@ class DB:
     :: load - loading a data
     """
 
-    __path_db = f"{os.getcwd()}/db/"
+    _path_db = f"{os.getcwd()}/db/"
 
+    def save(self):
+        pass
+
+    def load(self):
+        pass
+
+
+class PickleDB(DB):
     def __init__(self, name):
         self.file_name = self.__format_url_to_name(name)
-        self.path_file = self.__path_db + self.file_name
+        self.path_file = self._path_db + self.file_name
 
         self.data: list = []
         self.load()
@@ -35,10 +43,18 @@ class DB:
             open(self.path_file, 'x')
 
     def __check_exist_file(self):
-        if self.file_name in os.listdir(self.__path_db):
+        if self.file_name in os.listdir(self._path_db):
             return True
         else:
             return False
 
     def __format_url_to_name(self, name):
         return ''.join(filter(lambda l: l in string.ascii_letters, name)).replace('www', '').replace('https', '').replace('http', '')
+
+
+class JsonDB(DB):
+    pass
+
+
+def factory_db(*args, **kwargs):
+    return PickleDB(*args, **kwargs)

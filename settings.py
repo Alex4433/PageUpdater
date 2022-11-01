@@ -24,9 +24,9 @@ headers = {
 
 parsing_flags = {
     "item": ["item", "entry"],
-    "title": ["title", "", ""],
+    "title": ["title"],
     "date": ["pubDate", "pubdate", "published"],
-    "content": ["description", "", ""],
+    "content": ["description"],
     "url": ["link", "guid", "url", "uri"],
 }
 
