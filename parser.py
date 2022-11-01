@@ -4,7 +4,7 @@ import os
 from bs4 import BeautifulSoup
 
 from db import factory_db, DB
-from settings import proxies, headers
+from settings import proxies, headers, parsing_flags
 from dataclass import Post
 
 ENTRY_PATH = os.getcwd()
@@ -85,6 +85,8 @@ class Parser:
 
         self.request_manager = factory_RequestManager(mock=mock)
 
+        self.flags = {}
+
     def save(self):
         self.db.save()
 
@@ -99,6 +101,38 @@ class Parser:
                 print(f"[log] connection failed site: {self.name}")
                 self.req = ''
                 self.status = False
+
+    def get_flags(self):
+        soup = BeautifulSoup(self.req.text, "lxml")
+
+        list_of_items_up = None
+        for el in parsing_flags["item"]:
+            try:
+                list_of_items = soup.find_all('entry')
+                if list_of_items:
+                    self.flags["item"] = el
+                    list_of_items_up = list_of_items
+                    break
+            except:
+                continue
+
+        if not list_of_items_up:
+            self.status = False
+
+        fields = ["title", "date", "content", "url"]
+
+        for field in fields:
+            for el in parsing_flags[field]:
+                for item in list_of_items_up:
+                    try:
+                        check = item.find(el).text
+                        if check:
+                            self.flags[field] = el
+                            break
+                        else:
+                            continue
+                    except:
+                        continue
 
     def get_posts(self):
         pass
