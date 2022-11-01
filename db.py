@@ -91,5 +91,5 @@ class JsonDB(DB):
 
 
 def factory_db(*args, **kwargs):
-    # return PickleDB(*args, **kwargs)
-    return JsonDB(*args, **kwargs)
+    return PickleDB(*args, **kwargs)
+    # return JsonDB(*args, **kwargs)
