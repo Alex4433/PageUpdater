@@ -61,13 +61,18 @@ class JsonDB(DB):
         self.path_file += ".json"
 
     def save(self):
-        with open(self.path_file, "w") as file:
+        with open(self.path_file, "w", encoding="utf-8") as file:
             json.dump(self.format_to_json(), file, indent=4, ensure_ascii=False)
 
     def load(self):
-        with open(self.path_file, "r") as file:
-            a = json.load(file)
-            self.format_from_json(a)
+        try:
+            with open(self.path_file, "r") as file:
+
+                a = json.load(file)
+                self.format_from_json(a)
+        except Exception as ex:
+            print(ex,  " s: --- JsonDB failed load")
+
 
     def format_to_json(self):
         dec = []
