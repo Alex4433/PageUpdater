@@ -1,7 +1,14 @@
+import threading
 import time
+
+from PyQt5 import QtWidgets, uic, QtCore, QtGui
+from PyQt5.QtCore import Qt
+
+import sys
 
 from db import DB
 from parser import factory_parser
+from gui import Ui
 import settings
 from thread_func import *
 
@@ -54,12 +61,20 @@ def display_controller(site_name, posts: list):
         display_updates(site_name, posts[0].url, posts[0].title)
 
 
+def create_ui():
+    app = QtWidgets.QApplication(sys.argv)
+    window = Ui(list_of_sites)
+    app.exec_()
+
+
 def main():
     global list_of_sites
 
     Thread_CMD(list_of_sites).start_thread()
 
     list_of_sites = create_list_of_sites()
+    threading.Thread(target=create_ui).start()
+
     loop_update(list_of_sites)
 
 
