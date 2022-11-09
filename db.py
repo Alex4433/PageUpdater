@@ -10,17 +10,17 @@ class DB:
     :: load - loading a data
     """
 
-    _path_db = f"{os.getcwd()}/db/"
+    __path_db = f"{os.getcwd()}/db/"
 
     def __init__(self, name):
         self.file_name = self.__format_url_to_name(name)
-        self.path_file = self._path_db + self.file_name
+        self.path_file = self.__path_db + self.file_name
 
         self.data: list = []
         self.load()
 
-    def __check_exist_file(self):
-        if self.file_name in os.listdir(self._path_db):
+    def _check_exist_file(self):
+        if self.file_name in os.listdir(self.__path_db):
             return True
         else:
             return False
@@ -43,7 +43,7 @@ class PickleDB(DB):
             pickle.dump(self.data, file)
 
     def load(self):
-        if self.__check_exist_file():
+        if self._check_exist_file():
             with open(self.path_file, 'rb') as file:
                 try:
                     self.data = pickle.load(file)
