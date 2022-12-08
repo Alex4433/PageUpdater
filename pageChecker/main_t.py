@@ -1,17 +1,10 @@
-import threading
 import time
+import warnings
 
-from PyQt5 import QtWidgets, uic, QtCore, QtGui
-from PyQt5.QtCore import Qt
-
-import sys
-from db import DB
-from parser import factory_parser
 from gui.gui import create_ui
-import settings
+from parser import factory_parser
 from thread_func import *
 
-import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
 
