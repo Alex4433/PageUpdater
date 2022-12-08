@@ -1,0 +1,86 @@
+
+            QWidget{
+                background: #262D37;
+            }
+
+
+            QPushButton
+            {
+                color: white;
+                background: #0577a8;
+                border: 1px #DADADA solid;
+                padding: 5px 10px;
+                border-radius: 2px;
+                font-weight: bold;
+                font-size: 7pt;
+                outline: none;
+            }
+
+            QPushButton:hover{
+                border: 1px #C6C6C6 solid;
+                color: #fff;
+                background: #0892D0;
+            }
+
+        QPushButton#button_color_white{
+
+            background: #FFFFF1;
+        }
+
+
+        QListWidget#widget_list_of_sites
+        {
+        margin-bottom: 3px;
+
+        }
+
+        QListWidget#widget_list_of_sites:item
+        {
+            margin-left: auto;
+            margin-right: auto;
+
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ffffff;
+
+
+        }
+        /*QListWidget#site_list:item:focus*/
+        /*{*/
+        /*    border: 1px solid rgb(234, 8, 8);*/
+
+        /*}*/
+
+        QTextBrowser#widget_items_of_site
+        {
+            font-size: 24px;
+            color: #FFFFFF;
+        }
+
+        QListWidgetItem:item{
+            font-size: 6px;
+        }
+
+
+        QHeaderView:section {
+            color: black;
+            padding: 2px;
+            height:20px;
+            border: 0px solid #567dbc;
+            border-left:0px;
+            border-right:0px;
+            background: #f9f9f9;
+
+}
+
+
+
+        *:focus{
+        border: 1px solid rgb(101, 174, 200);
+        }
+
+        *{
+        font-size: 18px;
+        color: #FFFFFF;
+        }
+
