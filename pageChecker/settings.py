@@ -7,17 +7,17 @@ proxies = {
 }
 
 list_of_sites = {
-    '1': {        'name'     : 'habr',
-                  'url'      : 'https://habr.com/ru/rss/all/all/?fl=ru',
-                  'find_word': []},
+    '1': {'name': 'habr',
+          'url': 'https://habr.com/ru/rss/all/all/?fl=ru',
+          'find_word': []},
 
-    '2': {        'name'     : 'pikabu',
-                  'url'      : 'https://pikabu.ru/xmlfeeds.php?cmd=popular',
-                  'find_word': []},
+    # '2': {        'name'     : 'pikabu',
+    #               'url'      : 'https://pikabu.ru/xmlfeeds.php?cmd=popular',
+    #               'find_word': []},
 
-    '3': {        'name'     : '4pda',
-                  'url'      : 'https://4pda.to/feed/',
-                  'find_word': []},
+    '3': {'name': '4pda',
+          'url': 'https://4pda.to/feed/',
+          'find_word': []},
 
 }
 
